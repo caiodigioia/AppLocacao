@@ -1,0 +1,2 @@
+12321     Ferrari   Ferrari        Vermelha       2023      Esportivo DISPONÍVEL     
+123       Fiat      Mobi           Preto          2023      Basico    DISPONÍVEL     
