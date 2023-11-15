@@ -13,8 +13,25 @@ public class Gerente {
 
         switch (opcao) {
             case 1: // Cadastrar novo veiculo
-                System.out.println("Digite a placa do veículo: ");
-                String placa = sc.nextLine();
+                String placa;
+                boolean placaValida = false;
+
+                do {
+                    System.out.println("Digite a placa do veículo: ");
+                    placa = sc.nextLine();
+
+
+
+                    // Verificar se a placa já existe ou se está no formato correto
+                    if (!VerificaDados.validarFormatoPlaca(placa)) {
+                        System.out.println("Placa inválida. Deve seguir o padrão LLLNLNN. Tente novamente.");
+                    } else if (VerificaDados.verificarPlacaExistente(placa)) {
+                        System.out.println("Placa já registrada. Tente novamente.");
+                    } else {
+                        placaValida = true;
+                    }
+                } while (!placaValida);
+
                 System.out.println("Digite a marca do veículo: ");
                 String marca = sc.nextLine();
                 System.out.println("Digite o modelo do veículo: ");
@@ -24,8 +41,28 @@ public class Gerente {
                 System.out.println("Digite o ano do veículo: ");
                 int ano = sc.nextInt();
                 sc.nextLine();  // Consumir a quebra de linha pendente após a leitura do ano
-                System.out.println("Digite o grupo do veículo: ");
-                String grupo = sc.nextLine();
+
+                
+                String grupo;
+                boolean grupoValido = false;
+                do {
+                    System.out.println("Digite o grupo do veículo: ");
+                    grupo = sc.nextLine().toLowerCase(); // deixa em minusculo, visto que a verificacao de grupos está considerando nomes em letras minúsculas.
+
+                    // Verifica se o grupo digitado é válido
+                    if (!VerificaDados.validarGrupo(grupo)) {
+                        System.out.println("[ERRO] " + grupo + " não é um grupo válido.");
+                        System.out.println("Tente novamente. Os grupos válidos são: " + "\n" +
+                                            "-> basico" + "\n" +
+                                            "-> padrao" + "\n" +
+                                            "-> premium");
+                    } else {
+                        grupoValido = true;
+                    }
+
+                } while (!grupoValido);
+
+                
 
                 // Chama o construtor da classe Carros para criar um novo veículo
                 Carros novoVeiculo = new Carros(placa, marca, modelo, cor, ano, grupo);

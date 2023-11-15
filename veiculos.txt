@@ -1,2 +1,5 @@
 12321     Ferrari   Ferrari        Vermelha       2023      Esportivo DISPONÍVEL     
 123       Fiat      Mobi           Preto          2023      Basico    DISPONÍVEL     
+QWE1D22   Fiat      Mobi           Preto          2023      Basico    DISPONÍVEL     
+LLL2N11   fiat      mobi           preto          2023      basico    DISPONÍVEL     
+LLL2N12   Fiat      Mobi           laranja        2023      premium   DISPONÍVEL     

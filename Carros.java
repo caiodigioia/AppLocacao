@@ -15,7 +15,7 @@ public class Carros {
         this.cor = cor;
         this.ano = ano;
         this.grupo = grupo;
-        this.status = "DISPONÍVEL";   // Por padrão, todo veículo adicionado tem o status DISPONÍVEL
+        this.status = "disponível";   // Por padrão, todo veículo adicionado tem o status disponível
 
 
         // Escreve no banco de dados de veiculos
