@@ -17,8 +17,7 @@ public class Gerente {
                 "3 - Relatórios");
 
         Scanner sc = new Scanner(System.in);
-        opcao = sc.nextInt();
-        sc.nextLine();  // Consumir a quebra de linha pendente após a leitura da opção
+        opcao = Integer.parseInt(sc.nextLine());
 
         switch (opcao) {
             case 1: // Cadastrar novo veículo
@@ -45,9 +44,14 @@ public class Gerente {
                 System.out.println("Digite a cor do veículo: ");
                 String cor = sc.nextLine();
                 System.out.println("Digite o ano do veículo: ");
+<<<<<<< HEAD
                 int ano = sc.nextInt();
                 sc.nextLine();  // Consumir a quebra de linha pendente após a leitura do ano
 
+=======
+                int ano = Integer.parseInt(sc.nextLine());
+                
+>>>>>>> 8f350a4482232241a992c3550875c8c6d590d257
                 String grupo;
                 boolean grupoValido = false;
                 do {
