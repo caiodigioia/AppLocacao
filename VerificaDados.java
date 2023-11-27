@@ -45,4 +45,41 @@ public class VerificaDados {
             return false;
         }
     }
+
+    public static boolean validaExclusao(String placa) {
+    String nomeArquivo = "veiculos.txt";
+    try (BufferedReader leitor = new BufferedReader(new FileReader(nomeArquivo))) {
+        String linha;
+
+        while ((linha = leitor.readLine()) != null) {
+            // Divide a linha usando espaços como delimitador
+            String[] partes = linha.split("\\s+");
+
+            // A placa está na primeira coluna
+            String placaCarro = partes[0];
+
+            // O status está na sétima coluna
+            String statusCarro = partes[6];
+
+            // Verifica se a placa existe
+            if (placaCarro.equals(placa)) {
+                if (statusCarro.equals("locado")) {
+                    System.out.println("Não é possível excluir um veículo locado. Para excluí-lo, é necessário devolvê-lo.");
+                    return false;
+                } else {
+                    // A placa foi encontrada e o veículo não está locado
+                    return true;
+                }
+            }
+        }
+
+        // Se chegou aqui, a placa não foi encontrada
+        System.out.println("Placa não encontrada no arquivo.");
+        return false;
+    } catch (IOException e) {
+        System.err.println("Erro ao ler o arquivo: " + e.getMessage());
+        return false; // Tratar o erro de leitura do arquivo
+    }
+}
+
 }

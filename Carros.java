@@ -6,6 +6,7 @@ public class Carros {
     private int ano;
     private String grupo;
     private String status;
+        
 
     // construtor
     public Carros(String placa, String marca, String modelo, String cor, int ano, String grupo) {
