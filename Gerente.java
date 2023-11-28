@@ -14,7 +14,8 @@ public class Gerente {
         System.out.println("------------- Menu do Gerente -----------\n" +
                 "1 - Cadastrar novo veículo\n" +
                 "2 - Excluir veículo\n" +
-                "3 - Relatórios");
+                "3 - Relatórios\n" +
+                "4 - Alterar parâmetros de funcionamento");
 
         Scanner sc = new Scanner(System.in);
         opcao = Integer.parseInt(sc.nextLine());
@@ -44,14 +45,9 @@ public class Gerente {
                 System.out.println("Digite a cor do veículo: ");
                 String cor = sc.nextLine();
                 System.out.println("Digite o ano do veículo: ");
-<<<<<<< HEAD
                 int ano = sc.nextInt();
                 sc.nextLine();  // Consumir a quebra de linha pendente após a leitura do ano
 
-=======
-                int ano = Integer.parseInt(sc.nextLine());
-                
->>>>>>> 8f350a4482232241a992c3550875c8c6d590d257
                 String grupo;
                 boolean grupoValido = false;
                 do {
@@ -169,9 +165,79 @@ public class Gerente {
                 }
                 break;
 
-            default:
-                System.out.println("Opção inválida.");
-                break;
+                case 4: // Alterar parâmetros de funcionamento da loja
+                    listarParametros();
+                    System.out.println();
+                    System.out.println("Deseja alterar os parâmetros de qual grupo?");
+                    String escolhaGrupo = sc.nextLine().toLowerCase();
+
+                     while (!escolhaGrupo.equals("basico") && !escolhaGrupo.equals("padrao") &&!escolhaGrupo.equals("premium")) {
+                                    System.out.println("[ERRO] O grupo " + "'" + escolhaGrupo + "'" +  " não é válido. Os grupos válidos são: " + "\n" +
+                                            "-> basico" + "\n" +
+                                            "-> padrao" + "\n" +
+                                            "-> premium" + "\n");
+
+                                    escolhaGrupo = sc.nextLine().toLowerCase();
+                                }
+
+                    System.out.println("\n## Grupo " + escolhaGrupo + " selecionado com sucesso.");
+                    System.out.println("Deseja alterar qual parâmetro?" + "\n" + 
+                                       "1 - Valor da diária" + "\n" +
+                                       "2 - Valor do tanque" + "\n" +
+                                       "3 - Valor da limpza externa" + "\n" + 
+                                       "4 - Valor da limpeza interna" + "\n" +
+                                       "5 - Diária do seguro");
+                    int escolhaParametro = Integer.parseInt(sc.nextLine());
+                    String escolhaParametroNome = null;
+
+                    while (escolhaParametro < 1 || escolhaParametro > 5) {
+                                    System.out.println("[Erro] Opção inválida. Utilize uma das seguintes opções: " + "\n" +
+                                       "1 - Valor da diária" + "\n" +
+                                       "2 - Valor do tanque" + "\n" +
+                                       "3 - Valor da limpza externa" + "\n" + 
+                                       "4 - Valor da limpeza interna" + "\n" +
+                                       "5 - Diária do seguro");
+
+                                    escolhaParametro = Integer.parseInt(sc.nextLine());
+                                }
+
+                    // converte a opcao numerica para o nome do campo
+
+                    switch (escolhaParametro) {
+                        case 1:
+                            escolhaParametroNome = "Valor da diária";
+                            break;
+                        case 2:
+                            escolhaParametroNome = "Valor do tanque";
+                            break;
+                        case 3:
+                            escolhaParametroNome = "Valor da limpza externa";
+                            break;
+                        case 4:
+                            escolhaParametroNome = "Valor da limpeza interna";
+                            break;
+                        case 5:
+                            escolhaParametroNome = "Diária do seguro";
+                            break;
+                    }
+
+                    int novoParametro;
+
+                    if (escolhaParametroNome != null) {
+                        System.out.println("Qual deve ser o novo valor de " + escolhaParametroNome + " ?");
+                    }
+                    novoParametro = Integer.parseInt(sc.nextLine());
+
+                    alteraParametros(escolhaGrupo, escolhaParametroNome, novoParametro);
+
+
+
+
+                    break;
+
+                default:
+                    System.out.println("Opção inválida.");
+                    break;
         }
     }
 
@@ -300,5 +366,87 @@ public class Gerente {
             System.err.println("Erro ao excluir o veículo.");
         }
     }
+
+    private static void listarParametros() {
+        String nomeArquivo = "parametros.txt";
+        try (BufferedReader leitor = new BufferedReader(new FileReader(nomeArquivo))) {
+            String linha;
+
+                System.out.println("------------- Parâmetros Operacionais -----------");
+
+            while ((linha = leitor.readLine()) != null) {
+                // Divide a linha usando espaços como delimitador
+                String[] partes = linha.split("\\s{2,}");
+
+                if (partes.length >= 2) {
+                     System.out.println("Grupo: " + partes[0] + "\n" + "\n -> Valor da diária: R$" + partes[1] + "\n -> Valor do tanque: R$" + partes[2] + "\n -> Valor da limpeza externa: R$" + partes[3] + "\n -> Valor limpeza interna: R$" + partes[4] + "\n -> Diária do seguro: R$" + partes[5] + "\n");
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao ler o arquivo: " + e.getMessage());
+        }
+    }
+
+    private static void alteraParametros(String escolhaGrupo, String escolhaParametroNome, int novoValor) {
+    String nomeArquivo = "parametros.txt";
+    String nomeTemporario = "temp.txt";
+
+    try (BufferedReader leitor = new BufferedReader(new FileReader(nomeArquivo));
+         BufferedWriter escritor = new BufferedWriter(new FileWriter(nomeTemporario))) {
+
+        String linha;
+
+        while ((linha = leitor.readLine()) != null) {
+            // Divide a linha usando espaços como delimitador
+            String[] partes = linha.split("\\s+");
+
+            if (partes.length >= 2 && partes[0].equals(escolhaGrupo)) {
+                // Encontra o índice do parâmetro pelo nome
+                int indiceParametro = obterIndiceParametro(escolhaParametroNome);
+
+                if (indiceParametro != -1) {
+                    // Altera o valor desejado
+                    partes[indiceParametro] = Integer.toString(novoValor);
+                } else {
+                    System.out.println("Parâmetro inválido: " + escolhaParametroNome);
+                }
+            }
+
+            // Reescreve a linha no arquivo temporário
+            escritor.write(String.join("\t", partes));
+            escritor.newLine();
+        }
+
+    } catch (IOException e) {
+        System.err.println("Erro ao ler ou escrever no arquivo: " + e.getMessage());
+    }
+
+    // Renomeia o arquivo temporário para substituir o original
+    File arquivoOriginal = new File(nomeArquivo);
+    File arquivoTemporario = new File(nomeTemporario);
+    if (arquivoTemporario.renameTo(arquivoOriginal)) {
+        System.out.println("Parâmetro " + escolhaParametroNome + " alterado com sucesso para: R$" + novoValor);
+    } else {
+        System.err.println("Erro ao renomear o arquivo temporário.");
+    }
+}
+
+private static int obterIndiceParametro(String parametroNome) {
+    switch (parametroNome) {
+        case "Valor da diária":
+            return 1;
+        case "Valor do tanque":
+            return 2;
+        case "Valor da limpza externa":
+            return 3;
+        case "Valor da limpeza interna":
+            return 4;
+        case "Diária do seguro":
+            return 5;
+        default:
+            return -1; // Retorna -1 se o nome do parâmetro for inválido
+    }
+}
+
 
 }
