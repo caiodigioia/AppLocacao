@@ -54,6 +54,6 @@ public class Cliente {
 
   // Métodos
   public String toString() {
-    return String.format("%s\t%s\t%s\t%s\t%s", getCpf(), getNome(), getDataNascimento(), getEmail(), getCelular());
+    return String.format("%s\t%s\t%s\t%s\t%s\n", getCpf(), getNome(), getDataNascimento(), getEmail(), getCelular());
   }
 }
